@@ -20,13 +20,13 @@ export default class ensureAuthenticatedService {
     });
 
     if(!user) {
-      throw new AppError('E-mail or password incorrect!');
+      throw new AppError('E-mail or password incorrect!', 401);
     }
 
     const passwordMatch = await compare(password, user.password);
     
     if(!passwordMatch) {
-      throw new AppError('E-mail or password incorrect!');
+      throw new AppError('E-mail or password incorrect!', 401);
     }
 
     const token = sign(
