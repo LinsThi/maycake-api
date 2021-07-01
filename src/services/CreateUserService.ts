@@ -3,6 +3,7 @@ import { getCustomRepository } from 'typeorm';
 
 import UsersRepositories from '../repositories/UsersRepositories';
 
+import AppError from '../shared/errors/AppError';
 interface IUsersRequest {
   name: string;
   email: string;
@@ -21,7 +22,7 @@ export default class CreateUserService {
     });
 
     if(emailAlreadyExists) {
-      throw new Error('E-mail already exists!');
+      throw new AppError('E-mail already exists!');
     }
 
     const cpfAlreadyExists = await usersRepository.findOne({
@@ -29,12 +30,12 @@ export default class CreateUserService {
     });
 
     if (cpfAlreadyExists) {
-      throw new Error('CPF already exists!');
+      throw new AppError('CPF already exists!');
     }
 
     const hashPassword = await hash(password, 8);
 
-    const user = await usersRepository.create({
+    const user = usersRepository.create({
       name,
       email,
       password: hashPassword,

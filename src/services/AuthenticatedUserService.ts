@@ -4,6 +4,8 @@ import { sign } from 'jsonwebtoken';
 import { getCustomRepository } from 'typeorm';
 import UsersRepositories from '../repositories/UsersRepositories';
 
+import AppError from '../shared/errors/AppError';
+
 interface IAuthenticatedRequest {
   email: string;
   password: string;
@@ -18,13 +20,13 @@ export default class ensureAuthenticatedService {
     });
 
     if(!user) {
-      throw new Error('E-mail or password incorrect!');
+      throw new AppError('E-mail or password incorrect!');
     }
 
     const passwordMatch = await compare(password, user.password);
     
     if(!passwordMatch) {
-      throw new Error('E-mail or password incorrect!');
+      throw new AppError('E-mail or password incorrect!');
     }
 
     const token = sign(
