@@ -1,5 +1,6 @@
 import { hash } from 'bcryptjs';
 import { getCustomRepository } from 'typeorm';
+import { cpf as cpF } from 'cpf-cnpj-validator';
 
 import UsersRepositories from '../repositories/UsersRepositories';
 
@@ -14,7 +15,7 @@ interface IUsersRequest {
 }
 
 export default class CreateUserService {
-  async execute({ name, email, password, cpf, admin = false, avatar }: IUsersRequest){
+  async execute({ name, email, password, cpf, admin = false, avatar = 'defaultIMG.jpg' }: IUsersRequest){
     const usersRepository = getCustomRepository(UsersRepositories);
     
     const emailAlreadyExists = await usersRepository.findOne({
@@ -23,6 +24,16 @@ export default class CreateUserService {
 
     if(emailAlreadyExists) {
       throw new AppError('E-mail already exists!');
+    }
+
+    const cpfValid = cpF.isValid(cpf);
+
+    if (!cpfValid) {
+      throw new AppError('CPF invalid!');
+    }
+
+    if(cpf.length === 11){
+      cpf = cpF.format(cpf);
     }
 
     const cpfAlreadyExists = await usersRepository.findOne({

@@ -17,7 +17,7 @@ app.use("/sessions", authenticatedRoutes);
 
 app.use((err: Error, request: Request, response: Response, next : NextFunction) => {
   if(err instanceof AppError) {
-    response.status(err.statusCode).json({
+    return response.status(err.statusCode).json({
       status: 'error',
       message: err.message,
     });
