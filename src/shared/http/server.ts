@@ -5,6 +5,7 @@ import 'express-async-errors';
 
 import userRoutes from './routes/users.routes';
 import authenticatedRoutes from './routes/authenticated.routes';
+import productRoutes from './routes/products.routes';
 
 import '../typeorm';
 import AppError from '../errors/AppError';
@@ -14,6 +15,7 @@ app.use(express.json());
 
 app.use("/users", userRoutes);
 app.use("/sessions", authenticatedRoutes);
+app.use("/products", productRoutes);
 
 app.use((err: Error, request: Request, response: Response, next : NextFunction) => {
   if(err instanceof AppError) {
