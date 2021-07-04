@@ -41,6 +41,8 @@ build/Release
 node_modules/
 ormconfig.json
 src/shared/typeorm/index.ts
+tmp/*
+!tmp/.gitkeep
 jspm_packages/
 
 # TypeScript v1 declaration files
