@@ -13,20 +13,21 @@ const uploadAvt = multer(uploadAvatar);
 userRoutes.post('/', CreateUserController.handle);
 
 userRoutes.patch(
-  '/avatar', 
-  ensureAuthenticated, 
-  uploadAvt.single('avatar'), 
-  async(request, response) => {
+  '/avatar',
+  ensureAuthenticated,
+  uploadAvt.single('avatar'),
+  async (request, response) => {
     const updateUserAvatar = new UpdateUserAvatarService();
 
-    const user = await updateUserAvatar.execute({ 
-      user_id: request.user_id, 
+    const user = await updateUserAvatar.execute({
+      user_id: request.user_id,
       avatarFileName: request.file.filename,
     });
 
     delete user.password;
 
     return response.json(user);
-  });
+  },
+);
 
 export default userRoutes;
