@@ -19,6 +19,13 @@ productRoutes.post(
   ProductController.create,
 );
 
+productRoutes.put(
+  '/',
+  ensureAuthenticated,
+  ensureAdmin,
+  ProductController.update,
+);
+
 productRoutes.patch(
   '/photo',
   ensureAuthenticated,

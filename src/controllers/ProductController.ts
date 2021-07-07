@@ -17,6 +17,21 @@ class ProductController {
 
     return response.json(product);
   }
+
+  async update(request: Request, response: Response) {
+    const { product_id, name, description, value } = request.body;
+
+    const createProductService = new CreateProductService();
+
+    const product = await createProductService.update({
+      product_id,
+      name,
+      description,
+      value,
+    });
+
+    return response.json(product);
+  }
 }
 
 export default new ProductController();
