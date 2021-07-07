@@ -9,4 +9,6 @@ const saleRoutes = Router();
 
 saleRoutes.post('/', ensureAuthenticated, SaleController.create);
 
+saleRoutes.put('/', ensureAuthenticated, ensureAdmin, SaleController.update);
+
 export default saleRoutes;

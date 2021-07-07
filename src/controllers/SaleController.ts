@@ -15,6 +15,19 @@ class SaleController {
 
     return response.json(sale);
   }
+
+  async update(request: Request, response: Response) {
+    const { id_sale, status } = request.body;
+
+    const createSaleService = new CreateSaleService();
+
+    const sale = await createSaleService.update({
+      id_sale,
+      status,
+    });
+
+    return response.json(sale);
+  }
 }
 
 export default new SaleController();

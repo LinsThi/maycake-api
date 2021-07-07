@@ -7,8 +7,13 @@ import UsersRepository from '../repositories/UsersRepositories';
 import AppError from '../shared/errors/AppError';
 
 interface IRequest {
-  id_user_buying: string;
-  id_product_sold: string;
+  id_user_buying?: string;
+  id_product_sold?: string;
+}
+
+interface IRequestSale {
+  id_sale: string;
+  status: string;
 }
 
 export default class SaleService {
@@ -35,6 +40,22 @@ export default class SaleService {
       value: product.value,
       status: 'Aguardando pagamento',
     });
+
+    await saleRepository.save(sale);
+
+    return sale;
+  }
+
+  async update({ id_sale, status }: IRequestSale) {
+    const saleRepository = getCustomRepository(SaleRepositories);
+
+    const sale = await saleRepository.findOne(id_sale);
+
+    if (!sale) {
+      throw new AppError('Sale not found');
+    }
+
+    sale.status = status;
 
     await saleRepository.save(sale);
 
