@@ -11,8 +11,8 @@ interface IRequest {
   id_product_sold: string;
 }
 
-export default class CreateSaleService {
-  async execute({ id_user_buying, id_product_sold }: IRequest) {
+export default class SaleService {
+  async create({ id_user_buying, id_product_sold }: IRequest) {
     const saleRepository = getCustomRepository(SaleRepositories);
     const userRepository = getCustomRepository(UsersRepository);
     const productRepository = getCustomRepository(ProductRepositories);

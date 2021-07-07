@@ -11,13 +11,13 @@ interface IRequest {
   photo?: string;
 }
 
-export default class CreateProductService {
-  async execute({ name, description, value, photo = '' }: IRequest) {
+export default class ProductService {
+  async create({ name, description, value, photo = '' }: IRequest) {
     const productsRepository = getCustomRepository(ProductRepositories);
 
-    const productExists = await productsRepository.findOne({name});
+    const productExists = await productsRepository.findOne({ name });
 
-    if(productExists) {
+    if (productExists) {
       throw new AppError('Product already exists!');
     }
 
@@ -25,7 +25,7 @@ export default class CreateProductService {
       name,
       description,
       value,
-      photo
+      photo,
     });
 
     await productsRepository.save(product);

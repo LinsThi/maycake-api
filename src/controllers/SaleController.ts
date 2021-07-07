@@ -1,14 +1,14 @@
 import { Request, Response } from 'express';
 
-import CreateSaleService from '../services/CreateSaleService';
+import CreateSaleService from '../services/SaleService';
 
-class CreateSaleController {
-  async handle(request: Request, response: Response) {
+class SaleController {
+  async create(request: Request, response: Response) {
     const { id_product_sold } = request.body;
 
     const createSaleService = new CreateSaleService();
 
-    const sale = await createSaleService.execute({
+    const sale = await createSaleService.create({
       id_user_buying: request.user_id,
       id_product_sold,
     });
@@ -17,4 +17,4 @@ class CreateSaleController {
   }
 }
 
-export default new CreateSaleController();
+export default new SaleController();
