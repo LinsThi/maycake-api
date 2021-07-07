@@ -12,6 +12,8 @@ const uploadAvt = multer(uploadAvatar);
 
 userRoutes.post('/', UserController.create);
 
+userRoutes.put('/', ensureAuthenticated, UserController.update);
+
 userRoutes.patch(
   '/avatar',
   ensureAuthenticated,

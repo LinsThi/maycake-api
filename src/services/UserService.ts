@@ -15,6 +15,14 @@ interface IUsersRequest {
   avatar?: string;
 }
 
+interface IUsersUpdateRequest {
+  user_id: string;
+  name: string;
+  email: string;
+  oldPassword?: string;
+  newPassword?: string;
+}
+
 export default class UserService {
   async create({
     name,
@@ -62,6 +70,52 @@ export default class UserService {
       admin,
       avatar,
     });
+
+    await usersRepository.save(user);
+
+    delete user.password;
+
+    return user;
+  }
+
+  async update({
+    user_id,
+    name,
+    email,
+    oldPassword,
+    newPassword,
+  }: IUsersUpdateRequest) {
+    const usersRepository = getCustomRepository(UsersRepositories);
+
+    const user = await usersRepository.findOne(user_id);
+
+    if (!user) {
+      throw new AppError('User not found');
+    }
+
+    const userWithUpdatedEmail = await usersRepository.findOne({ email });
+
+    if (userWithUpdatedEmail) {
+      throw new AppError('E-mail already in use.');
+    }
+
+    user.name = name;
+    user.email = email;
+
+    if (oldPassword && !newPassword) {
+      throw new AppError(
+        'You need to inform the new password to set a new password',
+      );
+    }
+
+    if (oldPassword && newPassword) {
+      const oldPasswordHash = await compare(oldPassword, user.password);
+
+      if (!oldPasswordHash) {
+        throw new AppError('Old password does not match!');
+      }
+      user.password = await hash(newPassword, 8);
+    }
 
     await usersRepository.save(user);
 
