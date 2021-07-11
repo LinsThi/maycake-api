@@ -12,34 +12,34 @@ interface IAuthenticatedRequest {
 }
 
 export default class ensureAuthenticatedService {
-  async execute({ email, password }: IAuthenticatedRequest){
+  async execute({ email, password }: IAuthenticatedRequest) {
     const usersRepository = getCustomRepository(UsersRepositories);
 
     const user = await usersRepository.findOne({
-      email
+      email,
     });
 
-    if(!user) {
+    if (!user) {
       throw new AppError('E-mail or password incorrect!', 401);
     }
 
     const passwordMatch = await compare(password, user.password);
-    
-    if(!passwordMatch) {
+
+    if (!passwordMatch) {
       throw new AppError('E-mail or password incorrect!', 401);
     }
 
     const token = sign(
       {
-      email: user.email
-      }, 
-      '0812ced69e931b0d5cdc518349aeabee',
+        email: user.email,
+      },
+      process.env.APP_SECRET,
       {
         subject: user.id,
         expiresIn: '1d',
-      }
+      },
     );
 
     return token;
-  } 
+  }
 }
