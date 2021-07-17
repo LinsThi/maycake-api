@@ -6,9 +6,14 @@ import UpdateUserAvatarService from '../../../services/UpdateUserAvatarService';
 
 import UserController from '../../../controllers/UserController';
 import ensureAuthenticated from '../../../middlewares/ensureAuthenticated';
+import ensureAdmin from '../../../middlewares/ensureAdmin';
 
 const userRoutes = Router();
 const uploadAvt = multer(uploadAvatar);
+
+userRoutes.get('/list', ensureAuthenticated, ensureAdmin, UserController.index);
+
+userRoutes.get('/me', ensureAuthenticated, UserController.show);
 
 userRoutes.post('/', UserController.create);
 

@@ -11,9 +11,11 @@ import saleRoutes from './routes/sales.routes';
 
 import '../typeorm';
 import AppError from '../errors/AppError';
+import uploadAvatar from './config/uploadAvatar';
 
 const app = express();
 app.use(express.json());
+app.use('/files', express.static(uploadAvatar.directory));
 
 app.use('/users', userRoutes);
 app.use('/sessions', authenticatedRoutes);

@@ -1,9 +1,15 @@
-import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { v4 as uuid } from 'uuid';
+import { Exclude, Expose } from 'class-transformer';
 
 @Entity('users')
 export default class User {
-
   @PrimaryColumn()
   readonly id: string;
 
@@ -14,6 +20,7 @@ export default class User {
   email: string;
 
   @Column()
+  @Exclude()
   password: string;
 
   @Column()
@@ -31,8 +38,13 @@ export default class User {
   @UpdateDateColumn()
   updated_at: Date;
 
-  constructor(){
-    if(!this.id){
+  @Expose({ name: 'avatar_url' })
+  getAvatarUrl(): string {
+    return `${process.env.APP_API_URL}/files/${this.avatar}`;
+  }
+
+  constructor() {
+    if (!this.id) {
       this.id = uuid();
     }
   }

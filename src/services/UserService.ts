@@ -1,7 +1,8 @@
-import { getCustomRepository } from 'typeorm';
+import { getCustomRepository, Not } from 'typeorm';
 import { hash, compare } from 'bcryptjs';
 import { cpf as cpF } from 'cpf-cnpj-validator';
 
+import User from '../entities/User';
 import UsersRepositories from '../repositories/UsersRepositories';
 
 import AppError from '../shared/errors/AppError';
@@ -21,6 +22,11 @@ interface IUsersUpdateRequest {
   email: string;
   oldPassword?: string;
   newPassword?: string;
+}
+
+interface IUsersFind {
+  user_id?: string;
+  user_except?: string;
 }
 
 export default class UserService {
@@ -73,8 +79,6 @@ export default class UserService {
 
     await usersRepository.save(user);
 
-    delete user.password;
-
     return user;
   }
 
@@ -118,6 +122,30 @@ export default class UserService {
     }
 
     await usersRepository.save(user);
+
+    delete user.password;
+
+    return user;
+  }
+
+  async index({ user_except }: IUsersFind): Promise<User[]> {
+    let users: User[];
+
+    const usersRepository = getCustomRepository(UsersRepositories);
+
+    users = await usersRepository.find({
+      where: {
+        id: Not(user_except),
+      },
+    });
+
+    return users;
+  }
+
+  async show({ user_id }: IUsersFind): Promise<User> {
+    const usersRepository = getCustomRepository(UsersRepositories);
+
+    const user = await usersRepository.findOne(user_id);
 
     delete user.password;
 
