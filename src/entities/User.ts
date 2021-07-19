@@ -40,7 +40,7 @@ export default class User {
 
   @Expose({ name: 'avatar_url' })
   getAvatarUrl(): string {
-    return `${process.env.APP_API_URL}/files/${this.avatar}`;
+    return `${process.env.APP_API_URL}/filesAvatar/${this.avatar}`;
   }
 
   constructor() {

@@ -1,6 +1,8 @@
 import { request } from 'express';
 import { getCustomRepository } from 'typeorm';
 
+import Product from '../entities/Product';
+
 import ProductRepositories from '../repositories/ProductRepositories';
 import AppError from '../shared/errors/AppError';
 
@@ -10,6 +12,10 @@ interface IRequest {
   description: string;
   value: string;
   photo?: string;
+}
+
+interface IProductInfo {
+  product_id: string;
 }
 
 export default class ProductService {
@@ -56,6 +62,24 @@ export default class ProductService {
     product.value = value;
 
     await productsRepository.save(product);
+
+    return product;
+  }
+
+  async index(): Promise<Product[]> {
+    let products: Product[];
+
+    const productsRepository = getCustomRepository(ProductRepositories);
+
+    products = await productsRepository.find();
+
+    return products;
+  }
+
+  async show({ product_id }: IProductInfo): Promise<Product> {
+    const productsRepository = getCustomRepository(ProductRepositories);
+
+    const product = await productsRepository.findOne(product_id);
 
     return product;
   }

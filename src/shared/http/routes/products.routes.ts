@@ -12,6 +12,10 @@ import uploadPhoto from '../config/uploadPhoto';
 const productRoutes = Router();
 const uploadPht = multer(uploadPhoto);
 
+productRoutes.get('/list', ensureAuthenticated, ProductController.index);
+
+productRoutes.get('/info', ensureAuthenticated, ProductController.show);
+
 productRoutes.post(
   '/',
   ensureAuthenticated,
