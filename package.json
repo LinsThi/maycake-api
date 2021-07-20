@@ -6,8 +6,8 @@
   "author": "LinsThi <thiagolins13255@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev:server": "ts-node-dev src/shared/http/server.ts",
-    "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"
+    "dev:server": "ts-node-dev -r tsconfig-paths/register src/shared/http/server.ts",
+    "typeorm": "ts-node-dev @modules/user/infra/http/routes/ ./node_modules/typeorm/cli.js"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",

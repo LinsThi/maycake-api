@@ -4,10 +4,10 @@ import 'dotenv/config';
 import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
 
-import userRoutes from './routes/users.routes';
-import authenticatedRoutes from './routes/authenticated.routes';
-import productRoutes from './routes/products.routes';
-import saleRoutes from './routes/sales.routes';
+import userRoutes from '@modules/user/infra/http/routes/users.routes';
+import authenticatedRoutes from '@modules/user/infra/http/routes/authenticated.routes';
+import productRoutes from '@modules/product/infra/http/routes/products.routes';
+import saleRoutes from '@modules/sales/infra/http/routes/sales.routes';
 
 import '../typeorm';
 import AppError from '../errors/AppError';
