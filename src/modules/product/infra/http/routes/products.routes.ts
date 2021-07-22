@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import multer from 'multer';
+import { celebrate, Segments, Joi } from 'celebrate';
 
 import ensureAuthenticated from '@modules/user/infra/http/middlewares/ensureAuthenticated';
 import ensureAdmin from '@modules/user/infra/http/middlewares/ensureAdmin';
@@ -20,6 +21,13 @@ productRoutes.post(
   '/',
   ensureAuthenticated,
   ensureAdmin,
+  celebrate({
+    [Segments.BODY]: {
+      name: Joi.string().required(),
+      description: Joi.string().required(),
+      value: Joi.string().required(),
+    },
+  }),
   ProductController.create,
 );
 
@@ -27,6 +35,14 @@ productRoutes.put(
   '/',
   ensureAuthenticated,
   ensureAdmin,
+  celebrate({
+    [Segments.BODY]: {
+      product_id: Joi.string().uuid().required(),
+      name: Joi.string().required(),
+      description: Joi.string().required(),
+      value: Joi.string().required(),
+    },
+  }),
   ProductController.update,
 );
 

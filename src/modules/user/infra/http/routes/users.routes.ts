@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { celebrate, Joi, Segments } from 'celebrate';
 import multer from 'multer';
 import uploadAvatar from '@shared/http/config/uploadAvatar';
 
@@ -15,9 +16,32 @@ userRoutes.get('/list', ensureAuthenticated, ensureAdmin, UserController.index);
 
 userRoutes.get('/me', ensureAuthenticated, UserController.show);
 
-userRoutes.post('/', UserController.create);
+userRoutes.post(
+  '/',
+  celebrate({
+    [Segments.BODY]: {
+      name: Joi.string().required(),
+      email: Joi.string().email().required(),
+      password: Joi.string().required(),
+      cpf: Joi.string().required,
+    },
+  }),
+  UserController.create,
+);
 
-userRoutes.put('/', ensureAuthenticated, UserController.update);
+userRoutes.put(
+  '/',
+  ensureAuthenticated,
+  celebrate({
+    [Segments.BODY]: {
+      name: Joi.string().required(),
+      email: Joi.string().email().required(),
+      oldPassword: Joi.string().required(),
+      newPassword: Joi.string().required(),
+    },
+  }),
+  UserController.update,
+);
 
 userRoutes.patch(
   '/avatar',
