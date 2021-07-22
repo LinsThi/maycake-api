@@ -1,9 +1,11 @@
-import { getCustomRepository, Not } from 'typeorm';
+import { getCustomRepository, Not, MongoRepository } from 'typeorm';
 import { hash, compare } from 'bcryptjs';
 import { cpf as cpF } from 'cpf-cnpj-validator';
 
 import User from '../infra/typeorm/entities/User';
 import UsersRepositories from '../infra/typeorm/repositories/UsersRepositories';
+
+import NotificationsRepository from '@modules/notification/infra/typeorm/repositories/NotificationsRepository';
 
 import AppError from '@shared/errors/AppError';
 
@@ -39,6 +41,7 @@ export default class UserService {
     avatar = 'defaultIMG.jpg',
   }: IUsersRequest) {
     const usersRepository = getCustomRepository(UsersRepositories);
+    const notificationsRepository = new NotificationsRepository();
 
     const emailAlreadyExists = await usersRepository.findOne({
       email,
@@ -78,6 +81,12 @@ export default class UserService {
     });
 
     await usersRepository.save(user);
+
+    await notificationsRepository.create({
+      recipient_id: user.id,
+      title: 'Seja bem-vindo ao Maycake =)',
+      content: 'Obrigado por se cadastrar na aplicação!',
+    });
 
     return user;
   }

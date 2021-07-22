@@ -4,6 +4,8 @@ import ProductRepositories from '@modules/product/infra/typeorm/repositories/Pro
 import SaleRepositories from '../infra/typeorm/repositories/SaleRepositories';
 import UsersRepository from '@modules/user/infra/typeorm/repositories/UsersRepositories';
 
+import NotificationsRepository from '@modules/notification/infra/typeorm/repositories/NotificationsRepository';
+
 import AppError from '@shared/errors/AppError';
 
 interface IRequest {
@@ -21,6 +23,7 @@ export default class SaleService {
     const saleRepository = getCustomRepository(SaleRepositories);
     const userRepository = getCustomRepository(UsersRepository);
     const productRepository = getCustomRepository(ProductRepositories);
+    const notificationsRepository = new NotificationsRepository();
 
     const user = await userRepository.findOne(id_user_buying);
 
@@ -42,6 +45,12 @@ export default class SaleService {
     });
 
     await saleRepository.save(sale);
+
+    await notificationsRepository.create({
+      recipient_id: process.env.APP_USER_ID_SELLER,
+      title: 'Você tem uma nova venda',
+      content: `O usuário ${user.name} comprou ${product.name}`,
+    });
 
     return sale;
   }
