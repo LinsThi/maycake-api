@@ -4,9 +4,11 @@ import ProductRepositories from '@modules/product/infra/typeorm/repositories/Pro
 import SaleRepositories from '../infra/typeorm/repositories/SaleRepositories';
 import UsersRepository from '@modules/user/infra/typeorm/repositories/UsersRepositories';
 
+import Sale from '../infra/typeorm/entities/Sale';
 import NotificationsRepository from '@modules/notification/infra/typeorm/repositories/NotificationsRepository';
 
 import AppError from '@shared/errors/AppError';
+import { request } from 'express';
 
 interface IRequest {
   id_user_buying?: string;
@@ -16,6 +18,10 @@ interface IRequest {
 interface IRequestSale {
   id_sale: string;
   status: string;
+}
+
+interface ISaleInfo {
+  sale_id: string;
 }
 
 export default class SaleService {
@@ -52,6 +58,8 @@ export default class SaleService {
       content: `O usuário ${user.name} comprou ${product.name}`,
     });
 
+    request.sale_id = sale.id;
+
     return sale;
   }
 
@@ -67,6 +75,24 @@ export default class SaleService {
     sale.status = status;
 
     await saleRepository.save(sale);
+
+    return sale;
+  }
+
+  async index(): Promise<Sale[]> {
+    let sales: Sale[];
+
+    const saleRepository = getCustomRepository(SaleRepositories);
+
+    sales = await saleRepository.find();
+
+    return sales;
+  }
+
+  async show({ sale_id }: ISaleInfo): Promise<Sale> {
+    const saleRepository = getCustomRepository(SaleRepositories);
+
+    const sale = await saleRepository.findOne(sale_id);
 
     return sale;
   }

@@ -8,6 +8,7 @@ import {
   OneToOne,
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
+import { Expose } from 'class-transformer';
 
 import Products from '@modules/product/infra/typeorm/entities/Product';
 import User from '@modules/user/infra/typeorm/entities/User';
@@ -31,11 +32,21 @@ export default class Sale {
   @Column()
   status: string;
 
+  @Column()
+  confirmPay: string;
+
   @CreateDateColumn()
   created_at: string;
 
   @UpdateDateColumn()
   updated_at: string;
+
+  @Expose({ name: 'pay_url' })
+  getPayUrl(): string | null {
+    return this.confirmPay
+      ? `${process.env.APP_API_URL}/filesPays/${this.confirmPay}`
+      : null;
+  }
 
   constructor() {
     if (!this.id) {

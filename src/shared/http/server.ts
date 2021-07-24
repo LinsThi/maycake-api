@@ -15,11 +15,13 @@ import '../typeorm';
 import AppError from '../errors/AppError';
 import uploadAvatar from './config/uploadAvatar';
 import uploadPhoto from './config/uploadPhoto';
+import uploadConfirmPay from './config/uploadConfirmPay';
 
 const app = express();
 app.use(express.json());
 app.use('/filesAvatar', express.static(uploadAvatar.directory));
 app.use('/filesProduct', express.static(uploadPhoto.directory));
+app.use('/filesPays', express.static(uploadConfirmPay.directory));
 
 app.use('/users', userRoutes);
 app.use('/sessions', authenticatedRoutes);
