@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { classToClass } from 'class-transformer';
 
 import AuthenticatedUserService from '@modules/user/services/AuthenticatedUserService';
 
@@ -8,9 +9,12 @@ class AuthenticatedUserController {
 
     const authenticatedUserService = new AuthenticatedUserService();
 
-    const token = await authenticatedUserService.execute({ email, password });
+    const { user, token } = await authenticatedUserService.execute({
+      email,
+      password,
+    });
 
-    return response.json(token);
+    return response.json({ user: classToClass(user), token });
   }
 }
 

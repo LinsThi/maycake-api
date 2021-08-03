@@ -40,6 +40,6 @@ export default class ensureAuthenticatedService {
       },
     );
 
-    return token;
+    return { user, token };
   }
 }

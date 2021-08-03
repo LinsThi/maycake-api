@@ -45,9 +45,11 @@ class ProductController {
   async show(request: Request, response: Response) {
     const productService = new ProductService();
 
-    const { product_id } = request.body;
+    const { product_id } = request.query;
 
-    const products = await productService.show(product_id);
+    const products = await productService.show({
+      product_id: String(product_id),
+    });
 
     return response.json(classToClass(products));
   }

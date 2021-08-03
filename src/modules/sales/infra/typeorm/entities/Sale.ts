@@ -19,11 +19,11 @@ export default class Sale {
   readonly id: string;
 
   @JoinColumn({ name: 'id_user_buying' })
-  @OneToOne(() => User)
+  @OneToOne(() => User, { eager: true })
   id_user_buying: string;
 
   @JoinColumn({ name: 'id_product_sold' })
-  @OneToOne(() => Products)
+  @OneToOne(() => Products, { eager: true })
   id_product_sold: string;
 
   @Column()

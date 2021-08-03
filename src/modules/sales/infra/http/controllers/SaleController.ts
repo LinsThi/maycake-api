@@ -23,7 +23,7 @@ class SaleController {
     const saleService = new SaleService();
 
     const sale = await saleService.update({
-      id_sale,
+      id_sale: String(id_sale),
       status,
     });
 
@@ -41,9 +41,9 @@ class SaleController {
   async show(request: Request, response: Response) {
     const saleService = new SaleService();
 
-    const { sale_id } = request.body;
+    const { sale_id } = request.query;
 
-    const sale = await saleService.show(sale_id);
+    const sale = await saleService.show({ sale_id: String(sale_id) });
 
     return response.json(classToClass(sale));
   }
