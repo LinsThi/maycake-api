@@ -7,6 +7,7 @@ import UsersRepository from '../infra/typeorm/repositories/UsersRepositories';
 
 import AppError from '@shared/errors/AppError';
 import uploadAvatar from '@shared/http/config/uploadAvatar';
+import { classToClass } from 'class-transformer';
 
 interface IRequest {
   user_id: string;
@@ -36,6 +37,6 @@ export default class UpdateUserAvatarService {
 
     await usersRepository.save(user);
 
-    return user;
+    return classToClass(user);
   }
 }

@@ -21,6 +21,7 @@ import uploadConfirmPay from './config/uploadConfirmPay';
 const app = express();
 app.use(cors());
 app.use(express.json());
+
 app.use('/filesAvatar', express.static(uploadAvatar.directory));
 app.use('/filesProduct', express.static(uploadPhoto.directory));
 app.use('/filesPays', express.static(uploadConfirmPay.directory));

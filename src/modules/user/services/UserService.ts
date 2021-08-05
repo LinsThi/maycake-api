@@ -8,6 +8,7 @@ import UsersRepositories from '../infra/typeorm/repositories/UsersRepositories';
 import NotificationsRepository from '@modules/notification/infra/typeorm/repositories/NotificationsRepository';
 
 import AppError from '@shared/errors/AppError';
+import { classToClass } from 'class-transformer';
 
 interface IUsersRequest {
   name: string;
@@ -108,7 +109,7 @@ export default class UserService {
 
     const userWithUpdatedEmail = await usersRepository.findOne({ email });
 
-    if (userWithUpdatedEmail) {
+    if (userWithUpdatedEmail && userWithUpdatedEmail.id !== user.id) {
       throw new AppError('E-mail already in use.');
     }
 
@@ -132,9 +133,7 @@ export default class UserService {
 
     await usersRepository.save(user);
 
-    delete user.password;
-
-    return user;
+    return classToClass(user);
   }
 
   async index({ user_except }: IUsersFind): Promise<User[]> {

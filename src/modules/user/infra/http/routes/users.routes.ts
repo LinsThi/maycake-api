@@ -34,10 +34,10 @@ userRoutes.put(
   ensureAuthenticated,
   celebrate({
     [Segments.BODY]: {
-      name: Joi.string().required(),
-      email: Joi.string().email().required(),
-      oldPassword: Joi.string().required(),
-      newPassword: Joi.string().required(),
+      name: Joi.string(),
+      email: Joi.string().email(),
+      oldPassword: Joi.string(),
+      newPassword: Joi.string(),
     },
   }),
   UserController.update,
