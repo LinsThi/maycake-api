@@ -29,4 +29,17 @@ export default class NotificationsRepository
 
     return notification;
   }
+
+  public async show({
+    recipient_id,
+  }: Partial<ICreateNotificationDTO>): Promise<Notification[]> {
+    let notifications: Notification[];
+    notifications = await this.ormRepository
+      .createCursor(this.ormRepository.find())
+      .toArray();
+
+    return notifications.filter(
+      notification => notification.recipient_id === recipient_id,
+    );
+  }
 }

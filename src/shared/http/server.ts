@@ -17,6 +17,7 @@ import AppError from '../errors/AppError';
 import uploadAvatar from './config/uploadAvatar';
 import uploadPhoto from './config/uploadPhoto';
 import uploadConfirmPay from './config/uploadConfirmPay';
+import notificationRoutes from '@modules/notification/infra/http/routes/notifications.routes';
 
 const app = express();
 app.use(cors());
@@ -30,6 +31,7 @@ app.use('/users', userRoutes);
 app.use('/sessions', authenticatedRoutes);
 app.use('/products', productRoutes);
 app.use('/sales', saleRoutes);
+app.use('/notifications', notificationRoutes);
 
 app.use(errors());
 

@@ -3,4 +3,5 @@ import Notification from '../infra/typeorm/schemas/Notification';
 
 export default interface INotificationRepository {
   create(data: ICreateNotificationDTO): Promise<Notification>;
+  show(data: Partial<ICreateNotificationDTO>): Promise<Notification[]>;
 }
