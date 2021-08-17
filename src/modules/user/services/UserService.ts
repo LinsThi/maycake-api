@@ -1,4 +1,4 @@
-import { getCustomRepository, Not, MongoRepository } from 'typeorm';
+import { getCustomRepository, Not } from 'typeorm';
 import { hash, compare } from 'bcryptjs';
 import { cpf as cpF } from 'cpf-cnpj-validator';
 
@@ -42,7 +42,9 @@ export default class UserService {
     avatar = 'defaultIMG.jpg',
   }: IUsersRequest) {
     const usersRepository = getCustomRepository(UsersRepositories);
-    const notificationsRepository = new NotificationsRepository();
+    const notificationsRepository = getCustomRepository(
+      NotificationsRepository,
+    );
 
     const emailAlreadyExists = await usersRepository.findOne({
       email,
@@ -83,11 +85,14 @@ export default class UserService {
 
     await usersRepository.save(user);
 
-    await notificationsRepository.create({
+    const notification = notificationsRepository.create({
       recipient_id: user.id,
       title: 'Seja bem-vindo ao Maycake =)',
       content: 'Obrigado por se cadastrar na aplicação!',
+      read: false,
     });
+
+    await notificationsRepository.save(notification);
 
     return user;
   }

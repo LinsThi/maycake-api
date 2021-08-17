@@ -29,7 +29,9 @@ export default class SaleService {
     const saleRepository = getCustomRepository(SaleRepositories);
     const userRepository = getCustomRepository(UsersRepository);
     const productRepository = getCustomRepository(ProductRepositories);
-    const notificationsRepository = new NotificationsRepository();
+    const notificationsRepository = getCustomRepository(
+      NotificationsRepository,
+    );
 
     const user = await userRepository.findOne(id_user_buying);
 
@@ -52,11 +54,14 @@ export default class SaleService {
 
     await saleRepository.save(sale);
 
-    await notificationsRepository.create({
+    const notification = notificationsRepository.create({
       recipient_id: process.env.APP_USER_ID_SELLER,
       title: 'Você tem uma nova venda',
       content: `O usuário ${user.name} comprou ${product.name}`,
+      read: false,
     });
+
+    await notificationsRepository.save(notification);
 
     request.sale_id = sale.id;
 

@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, response, Response } from 'express';
 import NotificationService from '@modules/notification/services/NotificationsServices';
 
 class NotificationController {
@@ -7,9 +7,19 @@ class NotificationController {
 
     const notificationsService = new NotificationService();
 
-    let notifications = await notificationsService.show({ recipient_id });
+    const notifications = await notificationsService.show({ recipient_id });
 
     return response.json(notifications);
+  }
+
+  async update(request: Request, response: Response) {
+    const { id } = request.body;
+
+    const notificationsService = new NotificationService();
+
+    const notification = await notificationsService.update({ id });
+
+    return response.json(notification);
   }
 }
 

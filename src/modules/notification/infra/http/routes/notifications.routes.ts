@@ -12,4 +12,10 @@ notificationRoutes.get(
   NotificationController.show,
 );
 
+notificationRoutes.patch(
+  '/update',
+  ensureAuthenticated,
+  NotificationController.update,
+);
+
 export default notificationRoutes;

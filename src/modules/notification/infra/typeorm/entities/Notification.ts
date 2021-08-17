@@ -1,16 +1,17 @@
 import {
-  ObjectID,
+  PrimaryColumn,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  ObjectIdColumn,
   Entity,
 } from 'typeorm';
 
+import { v4 as uuid } from 'uuid';
+
 @Entity('notifications')
 export default class Notification {
-  @ObjectIdColumn()
-  id: ObjectID;
+  @PrimaryColumn()
+  readonly id: string;
 
   @Column()
   title: string;
@@ -29,4 +30,10 @@ export default class Notification {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  constructor() {
+    if (!this.id) {
+      this.id = uuid();
+    }
+  }
 }
