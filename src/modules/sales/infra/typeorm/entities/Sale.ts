@@ -12,6 +12,7 @@ import { Expose } from 'class-transformer';
 
 import Products from '@modules/product/infra/typeorm/entities/Product';
 import User from '@modules/user/infra/typeorm/entities/User';
+import Address from '@modules/address/infra/typeorm/entities/Address';
 
 @Entity('sales')
 export default class Sale {
@@ -34,6 +35,10 @@ export default class Sale {
 
   @Column()
   confirmPay: string;
+
+  @JoinColumn({ name: 'address_id_user' })
+  @OneToOne(() => Address, { eager: true })
+  address_id_user: string;
 
   @CreateDateColumn()
   created_at: string;

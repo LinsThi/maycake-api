@@ -5,16 +5,17 @@ import SaleService from '@modules/sales/services/SaleService';
 
 class SaleController {
   async create(request: Request, response: Response) {
-    const { id_product_sold } = request.body;
+    const { id_product_sold, address_id_user } = request.body;
 
     const saleService = new SaleService();
 
     const sale = await saleService.create({
       id_user_buying: request.user_id,
       id_product_sold,
+      address_id_user,
     });
 
-    return response.json(sale);
+    return response.json(classToClass(sale));
   }
 
   async update(request: Request, response: Response) {
@@ -27,7 +28,7 @@ class SaleController {
       status,
     });
 
-    return response.json(sale);
+    return response.json(classToClass(sale));
   }
 
   async index(request: Request, response: Response) {
