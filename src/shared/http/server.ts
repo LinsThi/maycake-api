@@ -11,6 +11,7 @@ import userRoutes from '@modules/user/infra/http/routes/users.routes';
 import authenticatedRoutes from '@modules/user/infra/http/routes/authenticated.routes';
 import productRoutes from '@modules/product/infra/http/routes/products.routes';
 import saleRoutes from '@modules/sales/infra/http/routes/sales.routes';
+import addressRoutes from '@modules/address/infra/http/routes/addres.routes';
 
 import '../typeorm';
 import AppError from '../errors/AppError';
@@ -32,6 +33,7 @@ app.use('/sessions', authenticatedRoutes);
 app.use('/products', productRoutes);
 app.use('/sales', saleRoutes);
 app.use('/notifications', notificationRoutes);
+app.use('/address', addressRoutes);
 
 app.use(errors());
 
