@@ -14,6 +14,8 @@ interface IRequest {
   id_user_buying?: string;
   id_product_sold?: string;
   address_id_user?: string;
+  methodpay?: string;
+  troco?: string;
 }
 
 interface IRequestSale {
@@ -26,7 +28,13 @@ interface ISaleInfo {
 }
 
 export default class SaleService {
-  async create({ id_user_buying, id_product_sold, address_id_user }: IRequest) {
+  async create({
+    id_user_buying,
+    id_product_sold,
+    address_id_user,
+    methodpay,
+    troco,
+  }: IRequest) {
     const saleRepository = getCustomRepository(SaleRepositories);
     const userRepository = getCustomRepository(UsersRepository);
     const productRepository = getCustomRepository(ProductRepositories);
@@ -52,6 +60,8 @@ export default class SaleService {
       value: product.value,
       status: 'Aguardando pagamento',
       address_id_user,
+      methodpay,
+      troco,
     });
 
     await saleRepository.save(sale);

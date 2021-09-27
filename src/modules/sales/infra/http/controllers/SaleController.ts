@@ -5,7 +5,7 @@ import SaleService from '@modules/sales/services/SaleService';
 
 class SaleController {
   async create(request: Request, response: Response) {
-    const { id_product_sold, address_id_user } = request.body;
+    const { id_product_sold, address_id_user, methodpay, troco } = request.body;
 
     const saleService = new SaleService();
 
@@ -13,6 +13,8 @@ class SaleController {
       id_user_buying: request.user_id,
       id_product_sold,
       address_id_user,
+      methodpay,
+      troco,
     });
 
     return response.json(classToClass(sale));

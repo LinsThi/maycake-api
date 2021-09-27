@@ -46,6 +46,12 @@ export default class Sale {
   @UpdateDateColumn()
   updated_at: string;
 
+  @Column()
+  methodpay: string;
+
+  @Column()
+  troco: string;
+
   @Expose({ name: 'pay_url' })
   getPayUrl(): string | null {
     return this.confirmPay

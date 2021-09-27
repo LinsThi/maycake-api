@@ -22,6 +22,8 @@ saleRoutes.post(
     [Segments.BODY]: {
       id_product_sold: Joi.string().uuid().required(),
       address_id_user: Joi.string().uuid().required(),
+      methodpay: Joi.string().required(),
+      troco: Joi.string(),
     },
   }),
   ensureAuthenticated,
@@ -33,7 +35,7 @@ saleRoutes.put(
   ensureAuthenticated,
   celebrate({
     [Segments.BODY]: {
-      id_product_sold: Joi.string().uuid().required(),
+      id_sale: Joi.string().uuid().required(),
       status: Joi.string().required(),
     },
   }),
