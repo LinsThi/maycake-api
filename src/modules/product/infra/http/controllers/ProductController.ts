@@ -53,6 +53,19 @@ class ProductController {
 
     return response.json(classToClass(products));
   }
+
+  async alterVisible(request: Request, response: Response) {
+    const productService = new ProductService();
+
+    const { product_id, visible } = request.body;
+
+    const products = await productService.alterVisible({
+      product_id,
+      visible,
+    });
+
+    return response.json(classToClass(products));
+  }
 }
 
 export default new ProductController();

@@ -46,6 +46,19 @@ productRoutes.put(
   ProductController.update,
 );
 
+productRoutes.put(
+  '/visibleAlter',
+  ensureAuthenticated,
+  ensureAdmin,
+  celebrate({
+    [Segments.BODY]: {
+      product_id: Joi.string().uuid().required(),
+      visible: Joi.bool().required(),
+    },
+  }),
+  ProductController.alterVisible,
+);
+
 productRoutes.patch(
   '/photo',
   ensureAuthenticated,

@@ -12,14 +12,22 @@ interface IRequest {
   description: string;
   value: string;
   photo?: string;
+  visible?: boolean;
 }
 
 interface IProductInfo {
   product_id: string;
+  visible?: boolean;
 }
 
 export default class ProductService {
-  async create({ name, description, value, photo = '' }: IRequest) {
+  async create({
+    name,
+    description,
+    value,
+    photo = '',
+    visible = true,
+  }: IRequest) {
     const productsRepository = getCustomRepository(ProductRepositories);
 
     const productExists = await productsRepository.findOne({ name });
@@ -33,6 +41,7 @@ export default class ProductService {
       description,
       value,
       photo,
+      visible,
     });
 
     await productsRepository.save(product);
@@ -80,6 +89,22 @@ export default class ProductService {
     const productsRepository = getCustomRepository(ProductRepositories);
 
     const product = await productsRepository.findOne(product_id);
+
+    return product;
+  }
+
+  async alterVisible({ product_id, visible }: IProductInfo) {
+    const productsRepository = getCustomRepository(ProductRepositories);
+
+    const product = await productsRepository.findOne(product_id);
+
+    if (!product) {
+      throw new AppError('Product not found!');
+    }
+
+    product.visible = visible;
+
+    await productsRepository.save(product);
 
     return product;
   }

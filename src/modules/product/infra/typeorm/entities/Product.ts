@@ -19,6 +19,9 @@ export default class Products {
   @Column()
   photo: string;
 
+  @Column()
+  visible: boolean;
+
   @Expose({ name: 'product_url' })
   getPhotoUrl(): string {
     return `${process.env.APP_API_URL}/filesProduct/${this.photo}`;
