@@ -19,6 +19,7 @@ import uploadAvatar from './config/uploadAvatar';
 import uploadPhoto from './config/uploadPhoto';
 import uploadConfirmPay from './config/uploadConfirmPay';
 import notificationRoutes from '@modules/notification/infra/http/routes/notifications.routes';
+import cartRoutes from '@modules/cart/infra/http/routes/cart.routes';
 
 const app = express();
 app.use(cors());
@@ -34,6 +35,7 @@ app.use('/products', productRoutes);
 app.use('/sales', saleRoutes);
 app.use('/notifications', notificationRoutes);
 app.use('/address', addressRoutes);
+app.use('/cart', cartRoutes);
 
 app.use(errors());
 
