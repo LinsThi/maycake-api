@@ -31,9 +31,29 @@ class CartController {
 
     const { id } = request.body;
 
-    await cartServices.delete(id);
+    await cartServices.delete({ id });
 
     return response.json({ message: 'Deleted with success' });
+  }
+
+  async update(request: Request, response: Response) {
+    const cartServices = new CartServices();
+
+    const { id, user_id, cartProduct } = request.body;
+
+    const cart = await cartServices.update({ id, user_id, cartProduct });
+
+    return response.json(cart);
+  }
+
+  async remove(request: Request, response: Response) {
+    const cartServices = new CartServices();
+
+    const { id, user_id, cartProduct } = request.body;
+
+    const cart = await cartServices.remove({ id, user_id, cartProduct });
+
+    return response.json(cart);
   }
 }
 

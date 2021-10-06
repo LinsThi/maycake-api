@@ -7,6 +7,7 @@ interface CartProps {
   id: ObjectID;
   user_id: string;
   cartProducts: Products[];
+  cartProduct: Products;
 }
 
 export default class CartRepository {
@@ -34,12 +35,10 @@ export default class CartRepository {
     let cartArray: Cart[];
     let cart: Cart;
     cartArray = await this.ormRepository
-      .createCursor(
-        this.ormRepository.findOne({
-          user_id,
-        }),
-      )
+      .createCursor(this.ormRepository.find())
       .toArray();
+
+    cartArray = cartArray.filter(cart => cart.user_id === user_id);
 
     cart = cartArray[0];
 
@@ -47,12 +46,55 @@ export default class CartRepository {
   }
 
   public async delete({ id }: Partial<CartProps>): Promise<void> {
-    await this.ormRepository
-      .createCursor(
-        this.ormRepository.findOneAndDelete({
-          id,
-        }),
-      )
+    await this.ormRepository.delete(id);
+  }
+
+  public async update({
+    id,
+    user_id,
+    cartProduct,
+  }: Partial<CartProps>): Promise<Cart> {
+    let cartArray: Cart[];
+    let cart: Cart;
+
+    cartArray = await this.ormRepository
+      .createCursor(this.ormRepository.find())
       .toArray();
+
+    cartArray = cartArray.filter(cart => cart.user_id === user_id);
+
+    cart = cartArray[0];
+
+    cart.products.push(cartProduct);
+
+    this.ormRepository.createCursor(this.ormRepository.update(id, cart));
+
+    return cart;
+  }
+
+  public async remove({
+    id,
+    user_id,
+    cartProduct,
+  }: Partial<CartProps>): Promise<Cart> {
+    let cartArray: Cart[];
+    let cart: Cart;
+
+    cartArray = await this.ormRepository
+      .createCursor(this.ormRepository.find())
+      .toArray();
+
+    cartArray = cartArray.filter(cart => cart.user_id === user_id);
+
+    cart = cartArray[0];
+
+    cart.products = cart.products.slice(
+      0,
+      cart.products.findIndex(product => product.id === cartProduct.id),
+    );
+
+    this.ormRepository.createCursor(this.ormRepository.update(id, cart));
+
+    return cart;
   }
 }

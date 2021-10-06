@@ -9,6 +9,14 @@ cartRoutes.post('/', ensureAuthenticated, CartController.create);
 
 cartRoutes.get('/', ensureAuthenticated, CartController.show);
 
-cartRoutes.put('/', ensureAuthenticated, CartController.delete);
+cartRoutes.delete('/', ensureAuthenticated, CartController.delete);
+
+cartRoutes.put('/updatecart', ensureAuthenticated, CartController.update);
+
+cartRoutes.put(
+  '/removeproductcart',
+  ensureAuthenticated,
+  CartController.remove,
+);
 
 export default cartRoutes;

@@ -6,6 +6,7 @@ interface CartRequest {
   id: ObjectID;
   user_id: string;
   cartProducts: Products[];
+  cartProduct: Products;
 }
 
 export default class CartServices {
@@ -36,5 +37,21 @@ export default class CartServices {
     await cartRepository.delete({
       id,
     });
+  }
+
+  async update({ id, user_id, cartProduct }: Partial<CartRequest>) {
+    const cartRepository = new CartRepository();
+
+    const cart = await cartRepository.update({ id, user_id, cartProduct });
+
+    return cart;
+  }
+
+  async remove({ id, user_id, cartProduct }: Partial<CartRequest>) {
+    const cartRepository = new CartRepository();
+
+    const cart = await cartRepository.remove({ id, user_id, cartProduct });
+
+    return cart;
   }
 }
